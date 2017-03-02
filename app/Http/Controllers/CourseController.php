@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use View;
 use URL;
 use Auth;
+Use Form;
 use Illuminate\Routing\UrlGenerator;
 class CourseController extends Controller {
 
@@ -47,8 +48,7 @@ class CourseController extends Controller {
 	   }
 	public function singlecourse($id){
 	 
-    $singlecourse = DB::table('courses')->where('id', $id)->get();
-	 
+    $singlecourse = DB::table('courses')->where('id', $id)->get();	 
 	   foreach($singlecourse as $scourses)
 	   {
 	   $useridforcourse1 =  DB::table('enrollments')
@@ -57,15 +57,14 @@ class CourseController extends Controller {
             ->get();
 		foreach($useridforcourse1 as $useridenrolled)
 	   {
-	   $userid1 = $useridenrolled->course_id;
-		echo "<br>";
-		echo "This course was enrolled by this user";	  
-	 
-		
+	   $userid1 = $useridenrolled->course_id;		 		
 	   }
-	       $data = $scourses->title . "<br>";
+	       $data = "<h1>" . $scourses->title . "</h1>" . "<br>";
 		   $data .= $scourses->summary . "<br>";
-		 
+		   $data .= "<br>";
+		   $data .= "<img src=" . $scourses->files . " width='500' />" . "<br>";
+		   $data .= "<br>";
+		   $data .=  "<a style='background: yellow; padding: 5px; margin-top: 10px;' href=" . URL::to('/singlecourseupdateview/') . "/" . $scourses->id . ">EDIT</a>";
 	   }
 	    if (Auth::check()) {
        return View::make('singlecourses')->with('singlepost', $data);
@@ -98,10 +97,9 @@ class CourseController extends Controller {
 	    echo $title;
 		echo "</h1>";
 	    echo "<br>";
-		echo "PRICE: " . $price;
-		 echo "<br>";
-	     echo "<a href='http://localhost/laravel-lecture/public/singlecourses/" . $course_id . " ' " . ">LINK</a>";
-	    echo "<br>";
+		echo "PRICE: $" . $price;
+		echo "<br>";
+	    
 		$enrolled = new EnrollmentController;
 		$userenrolledid = $enrolled->ifenrolled();   
 		$d = new UserController;
@@ -114,13 +112,11 @@ class CourseController extends Controller {
 	   $cid2 = $cid1->id;
        $cid3 = $cid1->user_id;
 	   $cid4 = $cid1->course_id;
-	    echo "Enrollment ID: ---- " . $cid2;
-	   echo "<br>";
-	   echo "USER ID: ENROLLED " . $cid3;
-	 echo "<br>";
-	  
-	  global $userid1; 
-	    
+	    //echo "Enrollment ID: ---- " . $cid2;
+		echo "<br>";
+	   //echo "USER ID: ENROLLED " . $cid3;
+		echo "<br>";	  
+		global $userid1; 	    
         $useridforcourse1 =  DB::table('courses')
             ->join('enrollments', 'courses.id', '=', 'enrollments.course_id')
 			->limit(1)
@@ -129,44 +125,39 @@ class CourseController extends Controller {
 	   {
 	   $userid1 = $useridenrolled->course_id;
 		echo "<br>";
-		echo "This course was enrolled by this user";	  
-	 
-		
-	   }
-	   
-	   
-	   echo "<br>";
-	
-	   }
-	   
+		echo "<span style='background: green; padding: 5px; color: white; margin: 7px;'> Enrolled </span>";	  
+		echo "<br>";		
+	   }	   	   
+	   echo "<br>";	
+	   }	   
 		if($userenrolledid === $useraccessid){
-		echo "SUMMARY: " . $summary; 
+		echo "SUMMARY: " .  $summary; 
         echo "<br>";		
-		 echo "Course id: ". $course_id;
-		 
-		  
-	 
-		   
-		 echo "<br>";
+		echo "Course id: ". $course_id;		   
+		echo "<br>";
+		echo "<br>";
 		}else
 		{
 		echo " NOT ENROLLED";
-		echo "<li><a href=";
+		echo "<span><a href=";
 		echo   URL::to('/enrollments');
 		echo "?=" . $course_id;
-		echo ">ENROLL NOW</a></li>";
+		echo "><br>ENROLL NOW</a></span>";
 		 $courseidcheck = self::getcourserid();
 	  
 		}
-		 echo "<li><a href=";
+		echo "<span style='float: right; background: yellow; padding: 7px; margin-top: 20px; font-size: 20px;'><a href=";
 		echo   URL::to('/enrollments');
 		echo "?=" . $course_id;
-		echo ">ENROLL NOW</a></li>"; 
+		echo "> ENROLL NOW</a></span>"; 
+		echo "<br>";		 
+	
+	    echo "<a href='http://localhost/laravel-lecture/public/singlecourses/" . $course_id . " ' " . "><span style='background: blue; padding: 5px; color: white; margin: 7px;'> DETAILS </span></a>";
+	    echo "<br>"; 
 		echo "<br>";
-		 
+		echo "<br>";
+		echo "File Type: " . $checkimage;
 		 echo "<br>";
-		echo "URL: " . $course_url_name;
-		echo $checkimage;
 		if ($checkimage == "jpg" || $checkimage == "gif" || $checkimage == "png") {
 		echo "<img src=";
 		echo ' " ';
@@ -174,13 +165,12 @@ class CourseController extends Controller {
 		echo ' " ';
 		echo "width='300' ";
         echo  "/>";
-		echo  $files2; }else {}
+		  }else {}
 		if ($checkimage == "txt" || $checkimage == "zip" || $checkimage == "pdf") {
-		echo "<a href=" . $files2  . ">" . "DOWNLOAD" . "</a>";
+		echo "<a href=" . $files2  . ">" . "  <span style='background: orange; padding: 5px;'> VIEW FILES </span>" . "</a>";
 		}else {}
 		echo "</div>";
-	   }
-	         
+	   }	         
   }
 
   /**
@@ -212,13 +202,13 @@ class CourseController extends Controller {
 	$feature = Input::get('feature');
 	$objective = Input::get('objective');
 	$course_url_name = Input::get('course_url_name');
-	$files = $request->file('files');
+	$files = $request->file('files');	 
 	$available = 1;
 	$destinationPath = storage_path('uploads');	 
     $files->move($destinationPath,$files->getClientOriginalName());
 	$filename = $files->getClientOriginalName();
 	$baseurl = "http://localhost/laravel-lecture";
-	$filepath = $baseurl . "/storage/uploads/" . $filename;
+	$filepath = $baseurl . "/storage/uploads/" . $filename; 
     $courseall = DB::table('courses')->insert(
     array('title' => $title, 'id' => 0, 'free' => 0, 'summary' => $summary, 'description' => $description, 'target' => $target, 'lecture_count' => 0, 'running_time' => $running_time, 'price' => $price,  'feature' => $feature, 'objective' => $objective, 'course_url_name' => $course_url_name, 'available' => $available, 'files' => $filepath));
   }
@@ -271,7 +261,25 @@ class CourseController extends Controller {
    */
   public function update($id)
   {
-    
+    $singlecourse_up = DB::table('courses')->where('id', $id)->get();	 
+	   foreach($singlecourse_up as $scourses_up)
+	   {
+	$useridforcourse_up =  DB::table('enrollments')
+            ->join('users', 'users.id', '=', 'enrollments.user_id')
+			->limit(1)
+            ->get();
+		foreach($useridforcourse_up as $useridenrolled_up)
+	   {
+	   $userid_up = $useridenrolled_up->course_id;		 		
+	   }
+	      
+		         
+		   $data_up = $scourses_up;
+		   
+	   }
+	     //if (Auth::check()) {
+       return View::make('singlecourseupdate')->with('singlepost1', $data_up);
+	   //}else{return View::make('singlecourseupdateguest');}
   }
 
   /**
@@ -284,7 +292,99 @@ class CourseController extends Controller {
   {
     
   }
+  /**
+   * Editing dashboard
+   *
+   *  
+   *  
+   */
+    public function updatedataview($id, Request $request )
+  {
+  $singlecourse = DB::table('courses')->where('id', $id)->get();	 
+	   foreach($singlecourse as $scourses)
+	   {
+	    
+	   $useridforcourse1 =  DB::table('enrollments')
+            ->join('users', 'users.id', '=', 'enrollments.user_id')
+			->limit(1)
+            ->get();
+		foreach($useridforcourse1 as $useridenrolled)
+	   {
+	   $userid1 = $useridenrolled->course_id;		 		
+	   }
+	       $id1 = self::updategetcoursetinfo($id, $summ, $stitle, $sprice, $sfiles);
+	       $data = "<h1>" . $scourses->title . "</h1>" . "<br>";
+		   $data .= $scourses->summary . "<br>";		 
+		   $data .= "<br>";
+		   $data .= "<img src=" . $scourses->files . " width='500' />" . "<br>";
+		   $data .= "<br>";		 
+		   $data .= "<form action=";
+		   $data .= " 'http://localhost/laravel-lecture/public/singleupdate/";
+		   $data .= $scourses->id . " ' ";
+		   $data .= "method='get'>";		  		    
+		   $data .= "<input name='title' type='text' ";
+		   $data .= " value=' ";
+		   $data .= $stitle;
+		   $data .= " ' />";
+		   $data .= "<br>";
+		   $data .= "<textarea name='summary' rows='4' cols='20'> "; //input start
+		   $data .= "  ";
+		   $data .= $summ;
+		   $data .= " </textarea>"; //input end
+		   $data .= "<br>";
+		   $data .= "<input name='price' type='text' "; //input start
+		   $data .= " value=' ";
+		   $data .= $sprice;
+		   $data .= " ' />"; //input end
+		   $data .= "<input name='files' type='file' "; //input start
+		   $data .= " value=' ";
+		   $data .= $sfiles;
+		   $data .= " ' />"; //input end
+		   $data .= "<br>";
+		   $data .= "<input name='updatedata' type='submit'>";
+		   $data .= "</form>";
+		    	 
+		}
+	  
+  return View::make('singlecourseupdateview')->with('singlepost2', $data);
   
+  }
+		/**
+		* OK   
+		*/
+ public function updategetcoursetinfo($id, &$summ, &$stitle, &$sprice, &$sfiles)
+ {
+		$summ = "";
+		$singlecourse = DB::table('courses')->where('id', $id)->get();	 
+		foreach($singlecourse as $scourses)
+		{ $scoursesid = $scourses->id;	
+		$stitle = $scourses->title;	   
+		$summ = $scourses->summary;
+        $sprice = $scourses->price;	
+		$sfiles	= $scourses->files;	
+		}
+		}
+		/**
+		* OK   
+		*/
+    public function updatedata($id, Request $request)
+  {
+		$stitle1 =Input::get('title');  
+	    $summ1 =Input::get('summary');
+		$sprice1 =Input::get('price');
+		//$sfiles =Input::file('files');
+		  $tfiles = $request->file('files');
+		//$destinationPath = storage_path('uploads');	 		 
+		$baseurl = "http://localhost/laravel-lecture";                 
+        //$tfiles->move($destinationPath, "image.jpg");
+		$filepath1 = $baseurl . "/storage/uploads/" . "image.jpg";
+		$id1 = self::updategetcoursetinfo($id, $summ, $stitle, $sprice, $sfiles);
+		$updatedatadb = DB::table('courses')->where('id', $id)->update(
+		array('title' => $stitle1, 'id' => $id, 'summary' => $summ1, 'price' => $sprice1, 'files' => $filepath1));
+		$theurl = "/singlecourseupdateview/" . $id;
+		return redirect($theurl);
+	 	echo "UPDATED";
+  }
 }
 
 ?>
