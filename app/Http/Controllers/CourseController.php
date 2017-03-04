@@ -62,9 +62,11 @@ class CourseController extends Controller {
 	       $data = "<h1>" . $scourses->title . "</h1>" . "<br>";
 		   $data .= $scourses->summary . "<br>";
 		   $data .= "<br>";
-		   $data .= "<img src=" . $scourses->files . " width='500' />" . "<br>";
+		   $data .= "<img src=' ";
+		   $data .= $scourses->files . " ' ";
+		   $data .= "width='500' /> <br>";
 		   $data .= "<br>";
-		   $data .=  "<a style='background: yellow; padding: 5px; margin-top: 10px;' href=" . URL::to('/singlecourseupdateview/') . "/" . $scourses->id . ">EDIT</a>";
+		   $data .=  "<a style='background: orange; padding: 15px; margin-top: 10px;' href=" . URL::to('/singlecourseupdateview/') . "/" . $scourses->id . ">EDIT</a>";
 	   }
 	    if (Auth::check()) {
        return View::make('singlecourses')->with('singlepost', $data);
@@ -126,6 +128,7 @@ class CourseController extends Controller {
 	   $userid1 = $useridenrolled->course_id;
 		echo "<br>";
 		echo "<span style='background: green; padding: 5px; color: white; margin: 7px;'> Enrolled </span>";	  
+		 echo "<a href='http://localhost/laravel-lecture/public/singlecourses/" . $course_id . " ' " . "><span style='background: blue; padding: 15px; border-radius: 4px; color: white; margin: 7px;'> DETAILS </span></a>";
 		echo "<br>";		
 	   }	   	   
 	   echo "<br>";	
@@ -140,31 +143,37 @@ class CourseController extends Controller {
 		{
 		echo " NOT ENROLLED";
 		echo "<span><a href=";
-		echo   URL::to('/enrollments');
+		echo  URL::to('/enrollments');
 		echo "?=" . $course_id;
-		echo "><br>ENROLL NOW</a></span>";
+		echo " target='_blank'><br>ENROLL NOW</a></span>";
 		 $courseidcheck = self::getcourserid();
 	  
 		}
 		echo "<span style='float: right; background: yellow; padding: 7px; margin-top: 20px; font-size: 20px;'><a href=";
 		echo   URL::to('/enrollments');
 		echo "?=" . $course_id;
-		echo "> ENROLL NOW</a></span>"; 
+		echo " target='_blank'> ENROLL NOW</a></span>"; 
 		echo "<br>";		 
-	
-	    echo "<a href='http://localhost/laravel-lecture/public/singlecourses/" . $course_id . " ' " . "><span style='background: blue; padding: 5px; color: white; margin: 7px;'> DETAILS </span></a>";
-	    echo "<br>"; 
+	 
 		echo "<br>";
 		echo "<br>";
 		echo "File Type: " . $checkimage;
 		 echo "<br>";
 		if ($checkimage == "jpg" || $checkimage == "gif" || $checkimage == "png") {
+		echo "<a href=' ";
+		echo  $files2;
+		echo  " ' target='_blank'>";
 		echo "<img src=";
 		echo ' " ';
 		echo $files2;
 		echo ' " ';
-		echo "width='300' ";
-        echo  "/>";
+		echo "width='100' ";
+        echo  "/> </a>";
+		echo "<br>";
+		echo "<br>";
+	     
+	    echo "<br>";
+		echo "<div style='height: 3px; width: 100%; background: #000; margin-top: 20px;'></div>";
 		  }else {}
 		if ($checkimage == "txt" || $checkimage == "zip" || $checkimage == "pdf") {
 		echo "<a href=" . $files2  . ">" . "  <span style='background: orange; padding: 5px;'> VIEW FILES </span>" . "</a>";
@@ -313,35 +322,35 @@ class CourseController extends Controller {
 	   $userid1 = $useridenrolled->course_id;		 		
 	   }
 	       $id1 = self::updategetcoursetinfo($id, $summ, $stitle, $sprice, $sfiles);
-	       $data = "<h1>" . $scourses->title . "</h1>" . "<br>";
-		   $data .= $scourses->summary . "<br>";		 
-		   $data .= "<br>";
-		   $data .= "<img src=" . $scourses->files . " width='500' />" . "<br>";
-		   $data .= "<br>";		 
-		   $data .= "<form action=";
-		   $data .= " 'http://localhost/laravel-lecture/public/singleupdate/";
-		   $data .= $scourses->id . " ' ";
-		   $data .= "method='get'>";		  		    
-		   $data .= "<input name='title' type='text' ";
-		   $data .= " value=' ";
-		   $data .= $stitle;
-		   $data .= " ' />";
+	       //$data = "<h1>" . $scourses->title . "</h1>" . "<br>";
+		   //$data .= $scourses->summary . "<br>";		 
+		   //$data .= "<br>";
+		   //$data .= "<img src=" . $scourses->files . " width='500' />" . "<br>";
+		   //$data .= "<br>";		 
+		   $data = "<form action=";
+		   $data .= " 'http://localhost/laravel-lecture/public/singleupdate/" . $scourses->id;
+		   $data .=  " ' ";
+		   $data .= "method='get' >";
+		   $data .=  "TITLE: " . $stitle;		   
+		   $data .= "<br>";			   
+		   $data .= "<input  placeholder='TITLE' style='width: 100%; margin-bottom: 20px;' name='title' type='text'  />";
 		   $data .= "<br>";
 		   $data .= "<textarea name='summary' rows='4' cols='20'> "; //input start
 		   $data .= "  ";
 		   $data .= $summ;
 		   $data .= " </textarea>"; //input end
 		   $data .= "<br>";
-		   $data .= "<input name='price' type='text' "; //input start
+		   $data .= "<input placeholder='PRICE' name='price' type='text' "; //input start
 		   $data .= " value=' ";
 		   $data .= $sprice;
 		   $data .= " ' />"; //input end
-		   $data .= "<input name='files' type='file' "; //input start
-		   $data .= " value=' ";
+		   $data .= " <input placeholder='URL' name='files' type='text' />"; //input start
 		   $data .= $sfiles;
-		   $data .= " ' />"; //input end
+		   //$data .= " value=' ";
+		   //$data .= $sfiles;
+		   //$data .= " ' />"; //input end
 		   $data .= "<br>";
-		   $data .= "<input name='updatedata' type='submit'>";
+		   $data .= "<input name='updatedata' type='submit' value='UPDATE' />";
 		   $data .= "</form>";
 		    	 
 		}
@@ -369,18 +378,25 @@ class CourseController extends Controller {
 		*/
     public function updatedata($id, Request $request)
   {
-		$stitle1 =Input::get('title');  
-	    $summ1 =Input::get('summary');
-		$sprice1 =Input::get('price');
-		//$sfiles =Input::file('files');
-		  $tfiles = $request->file('files');
-		//$destinationPath = storage_path('uploads');	 		 
-		$baseurl = "http://localhost/laravel-lecture";                 
+		$stitle1 = Input::get('title');	
+		if(empty($stitle1)){
+		$stitle1 = "NO TITLE";
+        }else{
+		$stitle1 = Input::get('title');		
+		} 	
+	    $summ1 = Input::get('summary');
+		$sprice1 = Input::get('price');
+		$sfiles1 = Input::get('files');
+		//$tfiles = $request->file('files');
+		 //$thefile = $tfiles->getClientOriginalName();
+		$destinationPath = storage_path('uploads');	 		 
+		$baseurl = "http://localhost/laravel-lecture"; 
+        //$tfiles->move($destinationPath,$tfiles->getClientOriginalName());		
         //$tfiles->move($destinationPath, "image.jpg");
-		$filepath1 = $baseurl . "/storage/uploads/" . "image.jpg";
+		//$filepath1 = $baseurl . "/storage/uploads/" . "image.jpg";
 		$id1 = self::updategetcoursetinfo($id, $summ, $stitle, $sprice, $sfiles);
 		$updatedatadb = DB::table('courses')->where('id', $id)->update(
-		array('title' => $stitle1, 'id' => $id, 'summary' => $summ1, 'price' => $sprice1, 'files' => $filepath1));
+		array('title' => $stitle1, 'id' => $id, 'summary' => $summ1, 'price' => $sprice1, 'files' => $sfiles1));
 		$theurl = "/singlecourseupdateview/" . $id;
 		return redirect($theurl);
 	 	echo "UPDATED";

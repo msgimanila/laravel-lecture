@@ -48,13 +48,14 @@ class EnrollmentController extends Controller {
     $status = Input::get('status');
 	$created_at = $creation;
 	$updated_at = $updatedate; 
-	$course_id = Input::get('course_id');
+	//$course_id = Input::get('course_id');
 	$user_id = $useraccessid;
 	$payment_id = Input::get('payment_id');
 	$start_date = Input::get('start_date');
 	$end_date = Input::get('end_date');
     $courseall = DB::table('enrollments')->insert(
     array('status' => $status, 'course_id' => $getcourseid, 'user_id' => $user_id, 'payment_id' => $payment_id, 'end_date' => $end_date, 'start_date' => $start_date, 'created_at' => $created_at, 'updated_at' => $updated_at));
+	return redirect('courses');
   
   }
 
