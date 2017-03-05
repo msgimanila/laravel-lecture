@@ -34,5 +34,10 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+	'facebook' => [
+        'client_id'     => '163311254182497',
+        'client_secret' => '6ac4f2eb7bf445dcd47c009364f7ca04',
+        'redirect'      => 'http://localhost/laravel-lecture/public/courses',
+    ],
 
 ];
