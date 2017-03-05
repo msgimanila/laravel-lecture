@@ -66,7 +66,7 @@ class CourseController extends Controller {
 		   $data .= $scourses->files . " ' ";
 		   $data .= "width='500' /> <br>";
 		   $data .= "<br>";
-		   $data .=  "<a style='background: orange; padding: 15px; margin-top: 10px;' href=" . URL::to('/singlecourseupdateview/') . "/" . $scourses->id . ">EDIT</a>";
+		    
 	   }
 	    if (Auth::check()) {
        return View::make('singlecourses')->with('singlepost', $data);
@@ -83,7 +83,7 @@ class CourseController extends Controller {
 		
 	   $view1 = View::make('courseslist'); 
 	   $courseall = DB::table('courses')->get();
-	    echo $view1;
+	   echo $view1;
 	   foreach($courseall as $courses)
 	   {
 	   $title = $courses->title;
@@ -397,8 +397,8 @@ class CourseController extends Controller {
 		$id1 = self::updategetcoursetinfo($id, $summ, $stitle, $sprice, $sfiles);
 		$updatedatadb = DB::table('courses')->where('id', $id)->update(
 		array('title' => $stitle1, 'id' => $id, 'summary' => $summ1, 'price' => $sprice1, 'files' => $sfiles1));
-		$theurl = "/singlecourseupdateview/" . $id;
-		return redirect($theurl);
+		$theurl = "/edit/" . $id;
+		return redirect($theurl);//after called editdata route
 	 	echo "UPDATED";
   }
 }
