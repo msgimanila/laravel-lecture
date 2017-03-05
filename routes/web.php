@@ -10,11 +10,17 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+Route::get('/edit/{id}','EditController@index');
+Route::get('/editdata/{id}','CourseController@updatedata');
+Route::get('/singlecourseupdateview/{id}','CourseController@updatedataview');
+Route::get('/singlecourseupdate/{id}','CourseController@update');
 Route::get('/singlecourses/{id}','CourseController@singlecourse');
 Route::get('/userid','UserController@show');
 Route::get('/useraccess','CourseController@useraccess');
 Route::get('/create','CourseController@create');
 Route::get('/courses','CourseController@index');
+Route::get('/singleupdate/{id}','CourseController@updatedata');
+Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/editcourses','CourseController@edit');
  //Route::get('/lecturestore','LectureController@store');
 //Route::get('/enroll','EnrollmentController@store');
