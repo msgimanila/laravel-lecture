@@ -1,21 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<div style="width: 80%; margin: auto;">
+<div style="width: 80%; margin: auto; ">
 <?php 
-echo Form::open(['action' => 'EnrollmentController@store', 'method' => 'post']);
+echo Form::open(['action' => 'EnrollmentController@store', 'method' => 'post' ]);
+echo "<div style='display: none;' >";
 echo "<label>status</label>";
-echo "<br>";
-echo Form::text('status'); 
+echo Form::text('status', 1); 
 echo "<br>";
 echo "course_id";
 echo "<br>";
-echo Form::text('course_id');
- 
+echo Form::text('course_id'); 
 echo "<br>";
 echo "payment_id";
 echo "<br>";
-echo Form::text('payment_id');
+echo Form::text('payment_id', 1);
 echo "<br>";
 echo "start_date";
 echo "<br>";
@@ -34,7 +33,7 @@ echo Form::text('month');
 echo "day";
 echo "<br>";
 echo Form::text('day');
-
+echo "</div>";
 echo Form::submit('ENROLL');
 ?>
 </div>

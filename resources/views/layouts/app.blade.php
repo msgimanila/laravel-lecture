@@ -12,7 +12,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+ <!-- Place inside the <head> of your HTML -->
+<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+<script type="text/javascript">
+tinymce.init({
+    selector: "textarea",
+ 
+ });
+</script>
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
