@@ -11,6 +11,7 @@ use View;
 use URL;
 use Auth;
 Use Form;
+
 use Illuminate\Routing\UrlGenerator;
 
 class EditController extends Controller {
@@ -32,6 +33,7 @@ class EditController extends Controller {
 	   }
 	        $enrolled = new CourseController;
 	       $id1 = $enrolled->updategetcoursetinfo($id, $summ, $stitle, $sprice, $sfiles);
+		    
 	       //$data = "<h1>" . $scourses->title . "</h1>" . "<br>";
 		   //$data .= $scourses->summary . "<br>";		 
 		   //$data .= "<br>";
@@ -41,11 +43,13 @@ class EditController extends Controller {
 		   $data .= "<form action=";
 		   $data .= " 'http://localhost/laravel-lecture/public/editdata/" . $scourses->id;
 		   $data .=  " ' ";
-		   $data .= "method='get' >";
+		   $data .= "method='post' >";
 		   $data .=  "TITLE: " . $stitle;		   
-		   $data .= "<br>";			   
+		   $data .= "<br>";			
+ 		   
 		   $data .= "<input  placeholder='TITLE' style='width: 100%; margin-bottom: 20px;' name='title' type='text'  />";
 		   $data .= "<br>";
+		    $data .= "COURSE ID:" . $scourses->id;
 		   $data .= "<textarea name='summary' rows='4' cols='20'> "; //input start
 		   $data .= "  ";
 		   $data .= $summ;

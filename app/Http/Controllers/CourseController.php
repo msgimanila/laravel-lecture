@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use DB;
 use App\Course;
+ use App\Coursemodule;
 use App\Enrollment; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -24,6 +25,29 @@ class CourseController extends Controller {
    //return $useraccessid;
 
    }
+    public function coursemodulelist($id)
+  {
+     //$coursemodulelist = DB::table('coursemodules')->where('course_id', $id)->orderBy('course_id')->get();
+ 	   $coursemodulelist = Coursemodule::modules($id); 
+	     foreach($coursemodulelist as $coursemodulelists)
+	    {
+
+$cmlist = "Title:" . $coursemodulelists->title . "<br>" . "Summary" . $coursemodulelists->summary . "<br>"; 
+ 
+			$cmlist .= "<br>"; 			 
+			$cmlist .= "<a href='";
+			$cmlist .= URL::to('/coursemoduleupdate/');
+			$cmlist .= '/' . $id . '/' . $coursemodulelists->id;
+			$cmlist .= "'>EDIT</a>";		
+			$cmlist .= "<br>"; 	
+			$cmlist .= "<br>"; 	
+			$cmlist .= "<br>"; 	
+	   }  
+	 
+ 	   return $cmlist;
+  
+	     
+  }
    /**
    * Check if user was enrolled.
    *
@@ -46,11 +70,12 @@ class CourseController extends Controller {
     public function getcourserid(){
     
 	   }
-	public function singlecourse($id){
+	public function singlecourse($id){// get single course
 	 
     $singlecourse = DB::table('courses')->where('id', $id)->get();	 
 	   foreach($singlecourse as $scourses)
 	   {
+	   
 	   $useridforcourse1 =  DB::table('enrollments')
             ->join('users', 'users.id', '=', 'enrollments.user_id')
 			->limit(1)
@@ -59,17 +84,40 @@ class CourseController extends Controller {
 	   {
 	   $userid1 = $useridenrolled->course_id;		 		
 	   }
+	    $coursemodules = DB::table('coursemodules')->where('course_id', $id)->get();
+ 	    
+	    foreach($coursemodules as $coursemodule)
+	   {
+	    
+		  
+	   //$cmtitle = $coursemodule->title . '<br>DESCRIPTION: ' . $coursemodule->description;
+	   //$cmid = $coursemodule->id;
+	    
+	   }
+	   
+	   $re =  self::coursemodulelist($id); 
+ 
+	   }
+	     
 	       $data = "<h1>" . $scourses->title . "</h1>" . "<br>";
 		   $data .= $scourses->summary . "<br>";
+		
 		   $data .= "<br>";
 		   $data .= "<img src=' ";
 		   $data .= $scourses->files . " ' ";
 		   $data .= "width='500' /> <br>";
 		   $data .= "<br>";
-		    
-	   }
-	    if (Auth::check()) {
-       return View::make('singlecourses')->with('singlepost', $data);
+		   $data .= "<a href='http://localhost/laravel-lecture/public/edit/" . $id . " ' " . "><span style='background: blue; padding: 15px; border-radius: 4px; color: white; margin: 7px;'> EDIT </span></a>";
+		   $data .= "<a href='http://localhost/laravel-lecture/public/coursemoduleinsert/" . $id . " ' " . "><span style='background: blue; padding: 15px; border-radius: 4px; color: white; margin: 7px;'> ADD MODULES </span></a>";
+			$data .= "<br>";
+			$data .= "<br>";
+
+			$data .= "<br>";
+
+	        $data2 =  $re;
+	   
+	   if (Auth::check()) {
+       return View::make('singlecourses')->with('singlepost', $data)->with('singlepost2', $data2);
 	   }else{return View::make('singlecoursesguest');}
 	   }
   public function index(Request $request)
@@ -200,7 +248,7 @@ class CourseController extends Controller {
    */
   public function store(Request $request)
   {
-    $title = Input::get('title');
+    $title = Input::get('title'); // from index()
 	$summary = Input::get('summary');
 	$description = Input::get('description');
 	$target = Input::get('target');
