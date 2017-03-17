@@ -10,8 +10,20 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+Route::get('userstatview',function(){
+   return view('userstat');
+});
+ Route::get('/coursemodulelist/{id}/{cid}','CourseController@coursemodulelist'); 
+Route::get('/coursemoduleupdatenow/{id}/{cid}','CourseModuleController@updatenow'); 
+Route::get('/coursemoduleupdate/{id}/{cid}','CourseModuleController@update'); 
+Route::get('/coursemoduleview/{id}/{cid}','CourseModuleController@index');
+Route::get('/coursemoduleview/','CourseModuleController@index');
+Route::get('/coursemoduleinsert/{id}','CourseModuleController@store');
+Route::get('/userstat/','UserstatController@userstat');
+Route::get('/userstat2','UserstatController@userstat2');
+Route::get('/sendmail','MailController@sendEmailReminder');
 Route::get('/edit/{id}','EditController@index');
-Route::get('/editdata/{id}','CourseController@updatedata');
+Route::post('/editdata/{id}','CourseController@updatedata');
 Route::get('/singlecourseupdateview/{id}','CourseController@updatedataview');
 Route::get('/singlecourseupdate/{id}','CourseController@update');
 Route::get('/singlecourses/{id}','CourseController@singlecourse');
