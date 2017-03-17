@@ -14,9 +14,11 @@
 					<li><a href={{ URL::to('/courses') }}>COURSES</a></li>
 					<li><a href={{ URL::to('/enrollments') }}>ENROLLMENTS</a></li>
 					<li><a href={{ URL::to('/makecourses') }}>MAKE COURSES</a></li>
+					<li><a href={{ URL::to('/tutorbot/bot/') }}>TUTORBOT</a></li>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+ 
