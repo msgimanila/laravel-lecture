@@ -9,4 +9,4 @@
 
 ## About Laravel Lecture
 
-Laravel Lecture is a web application that functions as LMS or Learning Management System for any kind of business and organization. It has a builtin Tutorbot or a chatbot that you can ask and answer questions about anything.
+Laravel Lecture is a web application that functions as LMS or Learning Management System for any kind of business and organization. It has a builtin Tutorbot or a chatbot that you can ask and it answer questions about anything.
